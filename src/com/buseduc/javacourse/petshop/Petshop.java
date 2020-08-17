@@ -10,6 +10,7 @@ public class Petshop {
         System.out.println("Pet nicks: " + shopSettings.getNicks());
         System.out.println("Pet specs: " + shopSettings.getSpecies());
         System.out.println("Pet sexs: " + shopSettings.getSexes());
+        System.out.println("Pet prices: " + shopSettings.getPrices());
 
     }
 }

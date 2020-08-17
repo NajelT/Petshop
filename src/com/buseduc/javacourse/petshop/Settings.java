@@ -1,8 +1,11 @@
 package com.buseduc.javacourse.petshop;
 
+import com.buseduc.javacourse.petshop.bio.AnimalInfo;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -32,9 +35,20 @@ public class Settings {
         return Arrays.asList(nicksStr.split(","));
     }
 
-    public List<String> getSpecies() {
+    public List<AnimalInfo> getSpecies() {
         String specStr = getProperties().getProperty("shop.pets.species");
-        return Arrays.asList(specStr.split(","));
+        List<String> speciesList = Arrays.asList(specStr.split(","));
+        List<AnimalInfo> result = new ArrayList<>();
+        for(String next : speciesList) {
+            try {
+                Integer key = Integer.parseInt(next);
+                AnimalInfo nextSpecies = AnimalInfo.SPECIES_MAP.get(key);
+                result.add(nextSpecies);
+            } catch (NumberFormatException nfe) {
+                continue;
+            }
+        }
+        return result;
     }
 
     public List<String> getSexes() {

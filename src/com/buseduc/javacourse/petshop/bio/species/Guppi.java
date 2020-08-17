@@ -1,4 +1,16 @@
-package com.buseduc.javacourse.petshop;
+package com.buseduc.javacourse.petshop.bio.species;
 
-public class Guppi {
+import com.buseduc.javacourse.petshop.bio.genes.Fish;
+
+public class Guppi extends Fish {
+    public static String name = "Guppi";
+
+    public Guppi() {
+        super.setCategory(BioCategory.SPECIES);
+    }
+    @Override
+    public String getName() {
+        return name;
+    }
+
 }

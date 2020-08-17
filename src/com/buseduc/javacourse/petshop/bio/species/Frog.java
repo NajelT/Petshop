@@ -1,4 +1,17 @@
 package com.buseduc.javacourse.petshop.bio.species;
 
-public class Frog {
+import com.buseduc.javacourse.petshop.bio.genes.Amphibia;
+
+public class Frog extends Amphibia {
+    public static String name = "Frog";
+
+    public Frog() {
+        super.setCategory(BioCategory.SPECIES);
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
 }

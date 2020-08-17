@@ -1,4 +1,11 @@
-package com.buseduc.javacourse.petshop;
+package com.buseduc.javacourse.petshop.bio.genes;
 
-public class Fish {
+import com.buseduc.javacourse.petshop.bio.AnimalInfo;
+
+public class Fish extends AnimalInfo {
+    public static String name = "Fish";
+
+    public Fish() {
+        super.setCategory(BioCategory.SPECIES);
+    }
 }
