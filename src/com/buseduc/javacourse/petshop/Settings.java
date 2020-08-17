@@ -56,9 +56,14 @@ public class Settings {
         return Arrays.asList(sexStr.split(","));
     }
 
-    public List<String> getPrices() {
+    public List<Double> getPrices() {
         String priceStr = getProperties().getProperty("shop.pets.prices");
-        return Arrays.asList(priceStr.split(","));
+        List<String> prices = Arrays.asList(priceStr.split(","));
+        List<Double> result = new ArrayList<>();
+        for(String price: prices) {
+            result.add(Double.parseDouble(price));
+        }
+        return result;
     }
 
     private Properties getProperties() {
