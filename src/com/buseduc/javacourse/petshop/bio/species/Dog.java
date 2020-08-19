@@ -4,10 +4,10 @@ import com.buseduc.javacourse.petshop.animalproperties.Noise;
 import com.buseduc.javacourse.petshop.animalproperties.Noisy;
 import com.buseduc.javacourse.petshop.bio.genes.Mammalia;
 
-public class Cat extends Mammalia implements Noisy {
-    public static String name = "Cat";
+public class Dog extends Mammalia implements Noisy {
+    public static String name = "Dog";
 
-    public Cat() {
+    public Dog() {
         super.setCategory(BioCategory.SPECIES);
     }
 
@@ -19,8 +19,7 @@ public class Cat extends Mammalia implements Noisy {
 
     @Override
     public Noise makeNoise() {
-        Noise catMeow = new Noise("Meow", 0.1, true, 50.);
-        return catMeow;
-
+        Noise dogHau = new Noise("Hau", 5., false, 20.);
+        return dogHau;
     }
 }

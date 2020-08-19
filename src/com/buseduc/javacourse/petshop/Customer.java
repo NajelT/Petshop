@@ -10,15 +10,24 @@ public class Customer {
     }
 
     private class Budget {
-        Double fullMoney;
-        Currency currency;
+        private Double fullMoney;
+        private Currency currency;
 
         public Budget(Double fullMoney, Currency currency) {
             this.fullMoney = fullMoney;
             this.currency = currency;
         }
+
     }
     public Double getAvailableMoney() {
         return this.budget.fullMoney;
     }
+    public boolean payForAnimal(Animal animal) {
+        if (this.budget.fullMoney >= animal.getPrice()) {
+            this.budget.fullMoney -= animal.getPrice();
+            return true;
+        }
+        return false;
+    }
+
 }

@@ -1,7 +1,11 @@
 package com.buseduc.javacourse.petshop;
 
+import com.buseduc.javacourse.petshop.animalproperties.Noisy;
 import com.buseduc.javacourse.petshop.bio.AnimalInfo;
 import com.buseduc.javacourse.petshop.bio.AnimalSex;
+import com.buseduc.javacourse.petshop.bio.genes.Mammalia;
+import com.buseduc.javacourse.petshop.bio.species.Cat;
+import com.buseduc.javacourse.petshop.bio.species.Dog;
 
 import java.util.*;
 
@@ -17,8 +21,16 @@ public class Petshop {
         Petshop shop = Petshop.getInstance(settings);
         shop.createAnimals();
         System.out.println(shop.shopAnimals);
-        Customer customer = new Customer("Vasya", 10., Currency.EUR);
+        Customer customer = new Customer("Vasya", 1000., Currency.EUR);
         shop.shopCustomers.put("Vasya", customer);
+        boolean isSuccess = customer.payForAnimal(shop.shopAnimals.get(0));
+        System.out.println(isSuccess);
+        System.out.println(customer.getAvailableMoney());
+        Noisy sharik = new Dog();
+        Noisy murka = new Cat();
+        System.out.println(sharik.makeNoise());
+        System.out.println(murka.makeNoise());
+
         Customer customer1 = new Customer("Petya", 150., Currency.RUB);
         shop.shopCustomers.put("Petya", customer1);
         System.out.println(shop.shopCustomers);

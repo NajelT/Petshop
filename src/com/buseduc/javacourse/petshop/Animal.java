@@ -16,6 +16,37 @@ public class Animal {
         this.sex = sex;
     }
 
+    public String getNick() {
+        return nick;
+    }
+
+    public void setNick(String nick) {
+        this.nick = nick;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public AnimalInfo getSpecies() {
+        return species;
+    }
+
+    public void setSpecies(AnimalInfo species) {
+        this.species = species;
+    }
+
+    public AnimalSex getSex() {
+        return sex;
+    }
+
+    public void setSex(AnimalSex sex) {
+        this.sex = sex;
+    }
 
     @Override
     public String toString() {
