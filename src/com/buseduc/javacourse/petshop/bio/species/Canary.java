@@ -2,15 +2,14 @@ package com.buseduc.javacourse.petshop.bio.species;
 
 import com.buseduc.javacourse.petshop.animalproperties.Noise;
 import com.buseduc.javacourse.petshop.animalproperties.Noisy;
-import com.buseduc.javacourse.petshop.bio.genes.Amphibia;
+import com.buseduc.javacourse.petshop.bio.genes.Bird;
 
-public class Frog extends Amphibia  implements Noisy {
-    public static String name = "Frog";
+public class Canary extends Bird implements Noisy {
+    public static String name = "Canary";
 
-    public Frog() {
+    public Canary() {
         super.setCategory(BioCategory.SPECIES);
     }
-
     @Override
     public String getName() {
         return name;
@@ -18,6 +17,6 @@ public class Frog extends Amphibia  implements Noisy {
 
     @Override
     public Noise makeNoise() {
-        return new Noise("Kwa", .1, false, 55.);
+        return new Noise("Fewww", 4., true, 100.);
     }
 }

@@ -18,16 +18,32 @@ public class Customer {
             this.currency = currency;
         }
 
+        @Override
+        public String toString() {
+            return fullMoney + " " + currency;
+        }
     }
+
+    public String getName() {
+        return name;
+    }
+
     public Double getAvailableMoney() {
         return this.budget.fullMoney;
     }
     public boolean payForAnimal(Animal animal) {
-        if (this.budget.fullMoney >= animal.getPrice()) {
-            this.budget.fullMoney -= animal.getPrice();
+        if (this.budget.fullMoney >= animal.getPrice().getAmount()) {
+            this.budget.fullMoney -= animal.getPrice().getAmount();
             return true;
         }
         return false;
     }
 
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "name='" + name + '\'' +
+                ", budget=" + budget +
+                '}';
+    }
 }

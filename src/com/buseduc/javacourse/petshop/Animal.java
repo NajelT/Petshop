@@ -5,30 +5,63 @@ import com.buseduc.javacourse.petshop.bio.AnimalSex;
 
 public class Animal {
     private String nick;
-    private double price;
+    private Price price;
     private AnimalInfo species;
     private AnimalSex sex;
 
-    public Animal(String nick, double price, AnimalInfo species, AnimalSex sex) {
+    public Animal(String nick, double price, Currency currency, AnimalInfo species, AnimalSex sex) {
         this.nick = nick;
-        this.price = price;
+        this.price = new Price(price, currency);
         this.species = species;
         this.sex = sex;
+    }
+
+
+    public class Price {
+        private double amount;
+        private Currency currency;
+
+        public Price(double amount, Currency currency) {
+            this.amount = amount;
+            this.currency = currency;
+        }
+
+        public double getAmount() {
+            return amount;
+        }
+
+        public void setAmount(double amount) {
+            this.amount = amount;
+        }
+
+        public Currency getCurrency() {
+            return currency;
+        }
+
+        public void setCurrency(Currency currency) {
+            this.currency = currency;
+        }
+
+        @Override
+        public String toString() {
+            return amount + " " + currency;
+        }
     }
 
     public String getNick() {
         return nick;
     }
 
+
     public void setNick(String nick) {
         this.nick = nick;
     }
 
-    public double getPrice() {
+    public Price getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Price price) {
         this.price = price;
     }
 

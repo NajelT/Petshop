@@ -6,6 +6,7 @@ import com.buseduc.javacourse.petshop.bio.AnimalSex;
 import com.buseduc.javacourse.petshop.bio.genes.Mammalia;
 import com.buseduc.javacourse.petshop.bio.species.Cat;
 import com.buseduc.javacourse.petshop.bio.species.Dog;
+import com.buseduc.javacourse.petshop.ui.CustomerForm;
 
 import java.util.*;
 
@@ -21,16 +22,10 @@ public class Petshop {
         Petshop shop = Petshop.getInstance(settings);
         shop.createAnimals();
         System.out.println(shop.shopAnimals);
-        Customer customer = new Customer("Vasya", 1000., Currency.EUR);
-        shop.shopCustomers.put("Vasya", customer);
-        boolean isSuccess = customer.payForAnimal(shop.shopAnimals.get(0));
-        System.out.println(isSuccess);
+        CustomerForm form = new CustomerForm(shop);
+        Customer customer = form.showFormAndGetCustomer();
+        shop.shopCustomers.put(customer.getName(), customer);
         System.out.println(customer.getAvailableMoney());
-        Noisy sharik = new Dog();
-        Noisy murka = new Cat();
-        System.out.println(sharik.makeNoise());
-        System.out.println(murka.makeNoise());
-
         Customer customer1 = new Customer("Petya", 150., Currency.RUB);
         shop.shopCustomers.put("Petya", customer1);
         System.out.println(shop.shopCustomers);
@@ -48,7 +43,7 @@ public class Petshop {
             AnimalInfo species = this.getSettings().getSpecies().get(i);
             String sexStr = this.getSettings().getSexes().get(i);
             AnimalSex sex = AnimalSex.getByCode(sexStr);
-            Animal animal = new Animal(nick, price, species, sex);
+            Animal animal = new Animal(nick, price, Currency.EUR, species, sex);
             result.add(animal);
 
 

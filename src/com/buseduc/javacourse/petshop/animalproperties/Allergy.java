@@ -1,5 +1,5 @@
 package com.buseduc.javacourse.petshop.animalproperties;
 
-public enum Allergie {
+public enum Allergy {
     WOOL, SMELL
 }

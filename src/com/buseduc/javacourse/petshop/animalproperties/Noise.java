@@ -1,13 +1,13 @@
 package com.buseduc.javacourse.petshop.animalproperties;
 
 public class Noise {
-    String onomatopeia;
+    String voice;
     Double maxVolume;
     Boolean isMelodic;
     Double averageTone;
 
-    public Noise(String onomatopeia, Double maxVolume, Boolean isMelodic, Double averageTone) {
-        this.onomatopeia = onomatopeia;
+    public Noise(String voice, Double maxVolume, Boolean isMelodic, Double averageTone) {
+        this.voice = voice;
         this.maxVolume = maxVolume;
         this.isMelodic = isMelodic;
         this.averageTone = averageTone;
@@ -17,7 +17,7 @@ public class Noise {
     @Override
     public String toString() {
         return "Noise{" +
-                "onomatopeia=" + onomatopeia +
+                "voice=" + voice +
                 ", maxVolume=" + maxVolume +
                 ", isMelodic=" + isMelodic +
                 ", averageTone=" + averageTone +
