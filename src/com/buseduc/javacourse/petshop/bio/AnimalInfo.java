@@ -38,8 +38,9 @@ public abstract class AnimalInfo {
     @Override
     public String toString() {
         return "AnimalInfo{ " +
+                category + ": " +
                 getName() +
-                category +
+
                 "}";
     }
 }
