@@ -3,10 +3,12 @@ package com.buseduc.javacourse.petshop;
 public class Customer {
     private String name;
     private Budget budget;
+    private Integer age;
 
-    public Customer(String name, Double amount, Currency currency) {
+    public Customer(String name, Double amount, Currency currency, Integer age) {
         this.name = name;
         this.budget = new Budget(amount, currency);
+        this.age = age;
     }
 
     private class Budget {
@@ -43,6 +45,7 @@ public class Customer {
     public String toString() {
         return "Customer{" +
                 "name='" + name + '\'' +
+                "age='" + age + '\'' +
                 ", budget=" + budget +
                 '}';
     }

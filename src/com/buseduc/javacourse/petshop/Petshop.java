@@ -1,17 +1,22 @@
 package com.buseduc.javacourse.petshop;
 
-import com.buseduc.javacourse.petshop.animalproperties.Noisy;
 import com.buseduc.javacourse.petshop.bio.AnimalInfo;
 import com.buseduc.javacourse.petshop.bio.AnimalSex;
-import com.buseduc.javacourse.petshop.bio.genes.Mammalia;
-import com.buseduc.javacourse.petshop.bio.species.Cat;
-import com.buseduc.javacourse.petshop.bio.species.Dog;
-import com.buseduc.javacourse.petshop.ui.CustomerForm;
+import com.buseduc.javacourse.petshop.ui.CustomerService;
 
 import java.util.*;
 
 public class Petshop {
     private List<Animal> shopAnimals;
+
+    public Map<String, Customer> getShopCustomers() {
+        return shopCustomers;
+    }
+
+    public void setShopCustomers(Map<String, Customer> shopCustomers) {
+        this.shopCustomers = shopCustomers;
+    }
+
     private Map<String, Customer> shopCustomers;
     private Settings settings;
     private String name;
@@ -22,15 +27,8 @@ public class Petshop {
         Petshop shop = Petshop.getInstance(settings);
         shop.createAnimals();
         System.out.println(shop.shopAnimals);
-        CustomerForm form = new CustomerForm(shop);
-        Customer customer = form.showFormAndGetCustomer();
-        shop.shopCustomers.put(customer.getName(), customer);
-        System.out.println(customer.getAvailableMoney());
-        Customer customer1 = new Customer("Petya", 150., Currency.RUB);
-        shop.shopCustomers.put("Petya", customer1);
-        System.out.println(shop.shopCustomers);
-
-        System.out.println(customer.getAvailableMoney());
+        CustomerService service = new CustomerService(shop);
+        service.start();
 
     }
 
