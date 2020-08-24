@@ -26,10 +26,18 @@ public class Petshop {
         Settings settings = Settings.getInstance();
         Petshop shop = Petshop.getInstance(settings);
         shop.createAnimals();
-        System.out.println(shop.shopAnimals);
+//        System.out.println(shop.shopAnimals);
         CustomerService service = new CustomerService(shop);
         service.start();
 
+    }
+
+    public Animal findAnimalById(int animalId) {
+        return getShopAnimals()
+                .stream()
+                .filter(animal -> animal.getId() == animalId)
+                .findAny()
+                .orElse(null);
     }
 
     private void createAnimals() {

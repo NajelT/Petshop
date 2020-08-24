@@ -8,12 +8,17 @@ public class Animal {
     private Price price;
     private AnimalInfo species;
     private AnimalSex sex;
+    private int id;
+    private Customer owner;
+    private static int counter = 0;
 
     public Animal(String nick, double price, Currency currency, AnimalInfo species, AnimalSex sex) {
         this.nick = nick;
         this.price = new Price(price, currency);
         this.species = species;
         this.sex = sex;
+        this.id = counter++;
+
     }
 
 
@@ -81,12 +86,39 @@ public class Animal {
         this.sex = sex;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public static int getCounter() {
+        return counter;
+    }
+
+    public Customer getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Customer owner) {
+        this.owner = owner;
+    }
+
+    public static void setCounter(int counter) {
+        Animal.counter = counter;
+    }
+
     @Override
     public String toString() {
+        String ownerName = owner == null ? "-" : owner.getName();
         return "Animal{" +
+                "id='" + id + '\'' +
                 "nick='" + nick + '\'' +
                 ", price=" + price +
                 ", species=" + species +
+                ", owner=" + ownerName +
                 ", sex=" + sex +
                 '}';
     }

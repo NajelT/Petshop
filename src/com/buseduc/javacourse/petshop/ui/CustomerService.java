@@ -1,5 +1,6 @@
 package com.buseduc.javacourse.petshop.ui;
 
+import com.buseduc.javacourse.petshop.Animal;
 import com.buseduc.javacourse.petshop.Currency;
 import com.buseduc.javacourse.petshop.Customer;
 import com.buseduc.javacourse.petshop.Petshop;
@@ -21,9 +22,57 @@ public class CustomerService {
             Customer customer = loginOrRegister(name);
             shop.getShopCustomers().put(customer.getName(), customer);
             System.out.println(shop.getShopCustomers());
+            printAnimalsList(customer.getAvailableMoney());
+            askCustomerToChooseAnimal(customer);
+
+
+
 
         }
     }
+
+
+    private void askCustomerToChooseAnimal(Customer customer) {
+        int animalId;
+        System.out.println("Please choose animal (type animal id):");
+        while (true) {
+            try {
+                animalId = Integer.parseInt(input.nextLine());
+                break;
+            } catch (NumberFormatException nfe) {
+                System.out.println("Incorrect id. Please enter it again:");
+            }
+        }
+        Animal toBuy = shop.findAnimalById(animalId);
+        if (customer.payForAnimal(toBuy)) {
+            System.out.println("Deal succeeded");
+            toBuy.setOwner(customer);
+        } else {
+            System.out.println("Deal failed");
+        }
+        System.out.println(customer);
+        printAnimalsList(customer.getAvailableMoney());
+        System.out.println(shop.getShopAnimals());
+
+
+    }
+
+    public void printAnimalsList(Double availableMoney) {
+        System.out.println("Here are the animals you can buy:");
+        System.out.println("__________________________________");
+        shop.getShopAnimals().stream()
+                .filter(animal -> animal.getOwner() == null && animal.getPrice().getAmount() <= availableMoney)
+                .forEach(animal -> {
+                    System.out.println(
+                        animal.getId() +  " - \t" +
+                        animal.getSpecies().getName() + " - \t" +
+                        animal.getNick() +
+                        " \t (" + animal.getPrice().toString() + ")");
+        });
+        System.out.println("__________________________________");
+
+    }
+
     public Customer loginOrRegister(String name) {
         if (shop.getShopCustomers().containsKey(name)) {
             System.out.println("Hello again, " + name);
