@@ -8,10 +8,7 @@ import com.buseduc.javacourse.petshop.animalproperties.Allergable;
 import com.buseduc.javacourse.petshop.animalproperties.Allergy;
 
 import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class CustomerService {
@@ -26,6 +23,8 @@ public class CustomerService {
     public void start() {
         Customer customer = null;
         while(true) {
+            printAllList(shop.getShopAnimals());
+            printAllList(shop.getShopCustomers().entrySet());
             if (customer == null) {
                 String name = getCustomerName();
                 customer = loginOrRegister(name);
@@ -78,8 +77,8 @@ public class CustomerService {
 
     private boolean isAvailableAnimal(Animal animal, Double availableMoney, Allergy allergy) {
         boolean isAllergyFound = false;
-        if(animal instanceof Allergable) {
-            Set<Allergy> allergies = ((Allergable) animal).produceAllergy();
+        if(animal.getSpecies() != null && animal.getSpecies() instanceof Allergable) {
+            Set<Allergy> allergies = ((Allergable) animal.getSpecies()).produceAllergy();
             isAllergyFound = allergies.contains(allergy);
         }
         return animal.getOwner() == null &&
@@ -179,6 +178,10 @@ public class CustomerService {
             }
         }
         return age;
+    }
+
+    public void printAllList(Collection<?> objectsToPrint) {
+        objectsToPrint.forEach(System.out::println);
     }
 
 }
