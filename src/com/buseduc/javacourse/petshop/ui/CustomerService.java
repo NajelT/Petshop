@@ -4,8 +4,15 @@ import com.buseduc.javacourse.petshop.Animal;
 import com.buseduc.javacourse.petshop.Currency;
 import com.buseduc.javacourse.petshop.Customer;
 import com.buseduc.javacourse.petshop.Petshop;
+import com.buseduc.javacourse.petshop.animalproperties.Allergable;
+import com.buseduc.javacourse.petshop.animalproperties.Allergy;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class CustomerService {
     private Scanner input;
@@ -17,59 +24,86 @@ public class CustomerService {
     }
 
     public void start() {
+        Customer customer = null;
         while(true) {
-            String name = getCustomerName();
-            Customer customer = loginOrRegister(name);
+            if (customer == null) {
+                String name = getCustomerName();
+                customer = loginOrRegister(name);
+            }
             shop.getShopCustomers().put(customer.getName(), customer);
             System.out.println(shop.getShopCustomers());
-            printAnimalsList(customer.getAvailableMoney());
-            askCustomerToChooseAnimal(customer);
-
-
-
+            int animalsCount = printAnimalsList(customer);
+            if (animalsCount > 0) {
+                if (!askCustomerToChooseAnimal(customer)) {
+                    System.out.println("Good bye!");
+                    customer = null;
+                }
+            } else {
+                System.out.println("Sorry, we have no animals for your requirements. Good bye!");
+                customer = null;
+            }
 
         }
     }
 
 
-    private void askCustomerToChooseAnimal(Customer customer) {
+    private boolean askCustomerToChooseAnimal(Customer customer) {
         int animalId;
         System.out.println("Please choose animal (type animal id):");
         while (true) {
+            String inputStr = "";
             try {
-                animalId = Integer.parseInt(input.nextLine());
+                inputStr = input.nextLine();
+                animalId = Integer.parseInt(inputStr);
                 break;
             } catch (NumberFormatException nfe) {
+                if("q".equals(inputStr.toLowerCase())) {
+                    return false;
+                }
                 System.out.println("Incorrect id. Please enter it again:");
             }
         }
         Animal toBuy = shop.findAnimalById(animalId);
-        if (customer.payForAnimal(toBuy)) {
-            System.out.println("Deal succeeded");
+        if (toBuy != null && customer.payForAnimal(toBuy)) {
+            System.out.println("Thank you for your choice!");
             toBuy.setOwner(customer);
         } else {
             System.out.println("Deal failed");
         }
         System.out.println(customer);
-        printAnimalsList(customer.getAvailableMoney());
         System.out.println(shop.getShopAnimals());
-
+        return true;
 
     }
 
-    public void printAnimalsList(Double availableMoney) {
+    private boolean isAvailableAnimal(Animal animal, Double availableMoney, Allergy allergy) {
+        boolean isAllergyFound = false;
+        if(animal instanceof Allergable) {
+            Set<Allergy> allergies = ((Allergable) animal).produceAllergy();
+            isAllergyFound = allergies.contains(allergy);
+        }
+        return animal.getOwner() == null &&
+                !isAllergyFound &&
+                animal.getPrice().getAmount() <= availableMoney;
+    }
+
+    public int printAnimalsList(Customer customer) {
         System.out.println("Here are the animals you can buy:");
         System.out.println("__________________________________");
-        shop.getShopAnimals().stream()
-                .filter(animal -> animal.getOwner() == null && animal.getPrice().getAmount() <= availableMoney)
-                .forEach(animal -> {
-                    System.out.println(
-                        animal.getId() +  " - \t" +
-                        animal.getSpecies().getName() + " - \t" +
-                        animal.getNick() +
-                        " \t (" + animal.getPrice().toString() + ")");
-        });
+        List<Animal> availableAnimals = shop.getShopAnimals().stream()
+                .filter(animal -> {
+                    boolean isToPrint = isAvailableAnimal(animal, customer.getAvailableMoney(), customer.getAllergy());
+                    if (isToPrint) {
+                        System.out.println(
+                                animal.getId() +  " - \t" +
+                                        animal.getSpecies().getName() + " - \t" +
+                                        animal.getNick() +
+                                        " \t (" + animal.getPrice().toString() + ")");
+                    }
+                    return isToPrint;
+                }).collect(Collectors.toList());
         System.out.println("__________________________________");
+        return availableAnimals.size();
 
     }
 
@@ -80,8 +114,9 @@ public class CustomerService {
         }
         Double amount = getAmount();
         Integer age = getCustomerAge();
+        Allergy allergy = getCustomerAllergy();
         System.out.println("Welcome, " + name);
-        return new Customer(name, amount, Currency.EUR, age);
+        return new Customer(name, amount, Currency.EUR, age, allergy);
     }
 
     String getCustomerName() {
@@ -94,6 +129,26 @@ public class CustomerService {
             }
             System.out.println("Incorrect name. Please enter name again:");
 
+        }
+        return ret;
+    }
+    Allergy getCustomerAllergy() {
+        System.out.println("Choose allergy (press Enter if you don't have any):");
+        Allergy ret = null;
+        Arrays.stream(Allergy.values())
+                .forEach(allergy -> System.out.println(allergy.ordinal() + " - " + allergy.name()));
+        while(true) {
+            String next = input.nextLine();
+            if ("".equals(next)) {
+                break;
+            }
+            try {
+                Integer index = Integer.parseInt(next);
+                ret = Allergy.values()[index];
+                return ret;
+            } catch (NumberFormatException | ArrayIndexOutOfBoundsException nfe ) {
+                System.out.println("Incorrect index of allergy. Please try again:");
+            }
         }
         return ret;
     }

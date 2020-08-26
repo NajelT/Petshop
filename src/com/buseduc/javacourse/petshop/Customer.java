@@ -1,14 +1,18 @@
 package com.buseduc.javacourse.petshop;
 
+import com.buseduc.javacourse.petshop.animalproperties.Allergy;
+
 public class Customer {
     private String name;
     private Budget budget;
     private Integer age;
+    private Allergy allergy;
 
-    public Customer(String name, Double amount, Currency currency, Integer age) {
+    public Customer(String name, Double amount, Currency currency, Integer age, Allergy allergy) {
         this.name = name;
         this.budget = new Budget(amount, currency);
         this.age = age;
+        this.allergy = allergy;
     }
 
     private class Budget {
@@ -39,6 +43,10 @@ public class Customer {
             return true;
         }
         return false;
+    }
+
+    public Allergy getAllergy() {
+        return allergy;
     }
 
     @Override

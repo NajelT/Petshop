@@ -16,6 +16,7 @@ public abstract class AnimalInfo {
         SPECIES_MAP.put(2, new Frog());
         SPECIES_MAP.put(3, new Guppi());
         SPECIES_MAP.put(4, new Parrot());
+        SPECIES_MAP.put(5, new Hamster());
 
     }
 
