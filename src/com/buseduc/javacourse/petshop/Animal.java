@@ -2,6 +2,7 @@ package com.buseduc.javacourse.petshop;
 
 import com.buseduc.javacourse.petshop.bio.AnimalInfo;
 import com.buseduc.javacourse.petshop.bio.AnimalSex;
+import com.buseduc.javacourse.petshop.users.Customer;
 
 public class Animal {
     private String nick;

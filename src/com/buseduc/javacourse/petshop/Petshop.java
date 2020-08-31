@@ -2,7 +2,8 @@ package com.buseduc.javacourse.petshop;
 
 import com.buseduc.javacourse.petshop.bio.AnimalInfo;
 import com.buseduc.javacourse.petshop.bio.AnimalSex;
-import com.buseduc.javacourse.petshop.ui.CustomerService;
+import com.buseduc.javacourse.petshop.users.Customer;
+import com.buseduc.javacourse.petshop.users.CustomerService;
 
 import java.util.*;
 
@@ -19,6 +20,7 @@ public class Petshop {
 
     private Map<String, Customer> shopCustomers;
     private Settings settings;
+    private SalesHistory salesHistory;
     private String name;
     private static Petshop petshop;
     public static void main(String[] args) {
@@ -65,6 +67,7 @@ public class Petshop {
         this.settings = settings;
         this.name = settings.getShopName();
         this.shopCustomers = new HashMap<>();
+        this.salesHistory = SalesHistory.getInstance();
 
     }
 
@@ -84,6 +87,9 @@ public class Petshop {
         this.settings = settings;
     }
 
+    public void saveHistory(Animal sold, Customer owner) {
+        this.salesHistory.update(sold, owner);
+    }
     public static Petshop getInstance(Settings settings) {
         if(petshop == null) {
             petshop = new Petshop(settings);

@@ -1,15 +1,16 @@
-package com.buseduc.javacourse.petshop;
+package com.buseduc.javacourse.petshop.users;
 
+import com.buseduc.javacourse.petshop.Animal;
+import com.buseduc.javacourse.petshop.Currency;
 import com.buseduc.javacourse.petshop.animalproperties.Allergy;
 
-public class Customer {
-    private String name;
+public class Customer extends User{
     private Budget budget;
     private Integer age;
     private Allergy allergy;
 
     public Customer(String name, Double amount, Currency currency, Integer age, Allergy allergy) {
-        this.name = name;
+        super(name);
         this.budget = new Budget(amount, currency);
         this.age = age;
         this.allergy = allergy;
@@ -30,9 +31,6 @@ public class Customer {
         }
     }
 
-    public String getName() {
-        return name;
-    }
 
     public Double getAvailableMoney() {
         return this.budget.fullMoney;
@@ -52,7 +50,7 @@ public class Customer {
     @Override
     public String toString() {
         return "Customer{" +
-                "name='" + name + '\'' +
+                "name='" + getName() + '\'' +
                 "age='" + age + '\'' +
                 ", budget=" + budget +
                 '}';

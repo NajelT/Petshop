@@ -1,13 +1,11 @@
-package com.buseduc.javacourse.petshop.ui;
+package com.buseduc.javacourse.petshop.users;
 
 import com.buseduc.javacourse.petshop.Animal;
 import com.buseduc.javacourse.petshop.Currency;
-import com.buseduc.javacourse.petshop.Customer;
 import com.buseduc.javacourse.petshop.Petshop;
 import com.buseduc.javacourse.petshop.animalproperties.Allergable;
 import com.buseduc.javacourse.petshop.animalproperties.Allergy;
 
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -21,30 +19,39 @@ public class CustomerService {
     }
 
     public void start() {
-        Customer customer = null;
+        User user = null;
         while(true) {
             printAllList(shop.getShopAnimals());
             printAllList(shop.getShopCustomers().entrySet());
-            if (customer == null) {
+            if (user == null) {
                 String name = getCustomerName();
-                customer = loginOrRegister(name);
+                user = loginOrRegister(name);
             }
-            shop.getShopCustomers().put(customer.getName(), customer);
-            System.out.println(shop.getShopCustomers());
-            int animalsCount = printAnimalsList(customer);
-            if (animalsCount > 0) {
-                if (!askCustomerToChooseAnimal(customer)) {
-                    System.out.println("Good bye!");
-                    customer = null;
-                }
+            if (user instanceof Customer) {
+                handleCustomer((Customer) user);
             } else {
-                System.out.println("Sorry, we have no animals for your requirements. Good bye!");
-                customer = null;
+                AdminService adminService = AdminService.getInstance(shop);
+                adminService.handleAdmin((Admin) user);
             }
 
         }
     }
 
+    private void handleCustomer(Customer customer) {
+        shop.getShopCustomers().put(customer.getName(), customer);
+        System.out.println(shop.getShopCustomers());
+        int animalsCount = printAnimalsList(customer);
+        if (animalsCount > 0) {
+            if (!askCustomerToChooseAnimal(customer)) {
+                System.out.println("Good bye!");
+                customer = null;
+            }
+        } else {
+            System.out.println("Sorry, we have no animals for your requirements. Good bye!");
+            customer = null;
+        }
+
+    }
 
     private boolean askCustomerToChooseAnimal(Customer customer) {
         int animalId;
@@ -65,6 +72,7 @@ public class CustomerService {
         Animal toBuy = shop.findAnimalById(animalId);
         if (toBuy != null && customer.payForAnimal(toBuy)) {
             System.out.println("Thank you for your choice!");
+            shop.saveHistory(toBuy, customer);
             toBuy.setOwner(customer);
         } else {
             System.out.println("Deal failed");
@@ -106,11 +114,15 @@ public class CustomerService {
 
     }
 
-    public Customer loginOrRegister(String name) {
+    public User loginOrRegister(String name) {
+        if ("admin".equals(name)) {
+            return new Admin();
+        }
         if (shop.getShopCustomers().containsKey(name)) {
             System.out.println("Hello again, " + name);
             return shop.getShopCustomers().get(name);
         }
+
         Double amount = getAmount();
         Integer age = getCustomerAge();
         Allergy allergy = getCustomerAllergy();
