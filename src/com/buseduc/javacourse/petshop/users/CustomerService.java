@@ -12,45 +12,48 @@ import java.util.stream.Collectors;
 public class CustomerService {
     private Scanner input;
     private Petshop shop;
+    private AdminService adminService;
 
     public CustomerService(Petshop shop) {
         this.shop = shop;
-        input = new Scanner(System.in);
+        this.input = new Scanner(System.in);
+        this.adminService = AdminService.getInstance(this.shop);
     }
 
     public void start() {
         User user = null;
         while(true) {
-            printAllList(shop.getShopAnimals());
-            printAllList(shop.getShopCustomers().entrySet());
             if (user == null) {
                 String name = getCustomerName();
                 user = loginOrRegister(name);
             }
             if (user instanceof Customer) {
-                handleCustomer((Customer) user);
+                if (!handleCustomer((Customer) user)) {
+                    user = null;
+                }
             } else {
-                AdminService adminService = AdminService.getInstance(shop);
-                adminService.handleAdmin((Admin) user);
+                if (!adminService.handleAdmin((Admin) user)) {
+                    user = null;
+                }
             }
 
         }
     }
 
-    private void handleCustomer(Customer customer) {
+    private boolean handleCustomer(Customer customer) {
         shop.getShopCustomers().put(customer.getName(), customer);
         System.out.println(shop.getShopCustomers());
         int animalsCount = printAnimalsList(customer);
         if (animalsCount > 0) {
             if (!askCustomerToChooseAnimal(customer)) {
                 System.out.println("Good bye!");
-                customer = null;
+                return false;
             }
         } else {
             System.out.println("Sorry, we have no animals for your requirements. Good bye!");
-            customer = null;
+            return false;
         }
-
+        return true;
     }
 
     private boolean askCustomerToChooseAnimal(Customer customer) {
