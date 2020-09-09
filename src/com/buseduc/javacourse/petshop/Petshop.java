@@ -20,9 +20,10 @@ public class Petshop {
 
     private Map<String, Customer> shopCustomers;
     private Settings settings;
-    private SalesHistory salesHistory;
+    private ChangesHistory changesHistory;
     private String name;
     private static Petshop petshop;
+    private double balance;
     public static void main(String[] args) {
 
         Settings settings = Settings.getInstance();
@@ -51,7 +52,7 @@ public class Petshop {
             AnimalInfo species = this.getSettings().getSpecies().get(i);
             String sexStr = this.getSettings().getSexes().get(i);
             AnimalSex sex = AnimalSex.getByCode(sexStr);
-            Animal animal = new Animal(nick, price, Currency.EUR, species, sex);
+            Animal animal = createAnimal(nick, price, species, sex);
             result.add(animal);
 
 
@@ -62,13 +63,34 @@ public class Petshop {
 
     }
 
+    public Animal createAnimal(String nick, double price, AnimalInfo species, AnimalSex sex) {
+        this.balance += price;
+        return new Animal(nick, price, Currency.EUR, species, sex);
+    }
+
 
     private Petshop(Settings settings) {
         this.settings = settings;
         this.name = settings.getShopName();
         this.shopCustomers = new HashMap<>();
-        this.salesHistory = SalesHistory.getInstance();
+        this.changesHistory = ChangesHistory.getInstance();
 
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    public ChangesHistory getChangesHistory() {
+        return changesHistory;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public List<Animal> getShopAnimals() {
@@ -87,9 +109,6 @@ public class Petshop {
         this.settings = settings;
     }
 
-    public void saveHistory(Animal sold, Customer owner) {
-        this.salesHistory.update(sold, owner);
-    }
     public static Petshop getInstance(Settings settings) {
         if(petshop == null) {
             petshop = new Petshop(settings);

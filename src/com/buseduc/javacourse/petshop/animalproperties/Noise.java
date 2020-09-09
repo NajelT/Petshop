@@ -16,11 +16,6 @@ public class Noise {
 
     @Override
     public String toString() {
-        return "Noise{" +
-                "voice=" + voice +
-                ", maxVolume=" + maxVolume +
-                ", isMelodic=" + isMelodic +
-                ", averageTone=" + averageTone +
-                '}';
+        return "noise: " + voice + "(" + maxVolume + "/" + isMelodic + "/" + averageTone + ")";
     }
 }

@@ -75,7 +75,8 @@ public class CustomerService {
         Animal toBuy = shop.findAnimalById(animalId);
         if (toBuy != null && customer.payForAnimal(toBuy)) {
             System.out.println("Thank you for your choice!");
-            shop.saveHistory(toBuy, customer);
+            shop.setBalance(shop.getBalance() - toBuy.getPrice().getAmount());
+            shop.getChangesHistory().update(toBuy, shop.getBalance(), true);
             toBuy.setOwner(customer);
         } else {
             System.out.println("Deal failed");

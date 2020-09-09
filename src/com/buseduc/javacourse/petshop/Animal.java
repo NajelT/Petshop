@@ -1,8 +1,17 @@
 package com.buseduc.javacourse.petshop;
 
+import com.buseduc.javacourse.petshop.animalproperties.Allergable;
+import com.buseduc.javacourse.petshop.animalproperties.Allergy;
+import com.buseduc.javacourse.petshop.animalproperties.Noise;
+import com.buseduc.javacourse.petshop.animalproperties.Noisy;
 import com.buseduc.javacourse.petshop.bio.AnimalInfo;
 import com.buseduc.javacourse.petshop.bio.AnimalSex;
 import com.buseduc.javacourse.petshop.users.Customer;
+
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 public class Animal {
     private String nick;
@@ -11,6 +20,7 @@ public class Animal {
     private AnimalSex sex;
     private int id;
     private Customer owner;
+    private LocalDateTime inShopFrom;
     private static int counter = 0;
 
     public Animal(String nick, double price, Currency currency, AnimalInfo species, AnimalSex sex) {
@@ -19,6 +29,7 @@ public class Animal {
         this.species = species;
         this.sex = sex;
         this.id = counter++;
+        this.inShopFrom = LocalDateTime.now();
 
     }
 
@@ -111,16 +122,29 @@ public class Animal {
         Animal.counter = counter;
     }
 
+    public Set<Allergy> getPossibleAllergies() {
+        if (this.species instanceof Allergable) {
+            return ((Allergable) this.species).produceAllergy();
+        }
+        return Collections.emptySet();
+    }
+    public Noise getPossibleNoise() {
+        if (this.species instanceof Noisy) {
+            return ((Noisy) this.species).makeNoise();
+        }
+        return null;
+    }
+
     @Override
     public String toString() {
         String ownerName = owner == null ? "-" : owner.getName();
-        return "Animal{" +
-                "id='" + id + '\'' +
-                "nick='" + nick + '\'' +
-                ", price=" + price +
-                ", species=" + species +
-                ", owner=" + ownerName +
-                ", sex=" + sex +
-                '}';
+        Noise noise = getPossibleNoise();
+        String noiseStr = noise == null ? "" : noise.toString();
+        return id + ". \t" +
+                 nick + "\t\t(" + species.getName() + ", " + sex + ")\t" +
+                price + "\t\t owner:" + ownerName +
+                "\n\t\tallergies: " + this.getPossibleAllergies().toString() + " \t\t" +
+                 "noise: " + noiseStr + " \t\t" +
+                 "\t\tin shop from: " + inShopFrom;
     }
 }

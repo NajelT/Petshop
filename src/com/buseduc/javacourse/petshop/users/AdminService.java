@@ -1,16 +1,13 @@
 package com.buseduc.javacourse.petshop.users;
 
-import com.buseduc.javacourse.petshop.Animal;
-import com.buseduc.javacourse.petshop.Currency;
-import com.buseduc.javacourse.petshop.Petshop;
-import com.buseduc.javacourse.petshop.animalproperties.Allergy;
+import com.buseduc.javacourse.petshop.*;
 import com.buseduc.javacourse.petshop.bio.AnimalInfo;
 import com.buseduc.javacourse.petshop.bio.AnimalSex;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import static com.buseduc.javacourse.petshop.bio.AnimalInfo.SPECIES_MAP;
 
@@ -38,7 +35,7 @@ public class AdminService {
                 case -1:
                     return false;
                 case 1:
-                    System.out.println(shop.getShopAnimals());
+                    printListOfAnimals();
                     break;
                 case 2:
                     addNewAnimal();
@@ -47,7 +44,7 @@ public class AdminService {
                     printListOfSales();
                     break;
                 case 4:
-                    printListOfAdditions();
+                    printListOfReceives();
                     break;
                 case 5:
                     printListOfTransactions();
@@ -65,9 +62,10 @@ public class AdminService {
         Double price = getPrice();
         AnimalInfo species = getSpecies();
         AnimalSex sex = getSex();
-        Animal newAnimal = new Animal(nick, price, Currency.EUR, species, sex);
+        Animal newAnimal = shop.createAnimal(nick, price, species, sex);
         List<Animal> shopAnimals = shop.getShopAnimals();
         shopAnimals.add(newAnimal);
+        shop.getChangesHistory().update(newAnimal, shop.getBalance(), false);
         shop.setShopAnimals(shopAnimals);
 
 
@@ -141,19 +139,50 @@ public class AdminService {
 
     }
 
-    private void printListOfSales() {
+    private void printListOfAnimals() {
+        shop.getShopAnimals().forEach(System.out::println);
 
     }
 
-    private void printListOfAdditions() {
+    private void printListOfSales() {
+        List<ChangeItem> sales = shop.getChangesHistory()
+                .getChangeItems().stream()
+                .filter(change -> change instanceof SaleItem)
+                .collect(Collectors.toList());
+        sales.forEach(System.out::println);
+
+    }
+
+    private void printListOfReceives() {
+        List<ChangeItem> sales = shop.getChangesHistory()
+                .getChangeItems().stream()
+                .filter(change -> change instanceof ReceiveItem)
+                .collect(Collectors.toList());
+        sales.forEach(System.out::println);
 
     }
 
     private void printListOfTransactions() {
+        shop.getChangesHistory().getChangeItems().forEach(System.out::println);
 
     }
 
     private void printListOfCustomers() {
+        shop.getShopCustomers().values()
+                .forEach(customer -> {
+                    System.out.println(customer);
+                        double accum = 0;
+                        for(Animal animal : shop.getShopAnimals()) {
+                            if (animal.getOwner() == customer) {
+                                System.out.println(animal.getNick() + "(" + animal.getSpecies().getName() +
+                                                ", " + animal.getPrice().getAmount() + ")");
+                                accum += animal.getPrice().getAmount();
+                            }
+                        }
+                    System.out.println("Total spent: " + accum);
+
+        });
+
 
     }
 
