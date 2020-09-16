@@ -43,7 +43,7 @@ public class Petshop {
                 .orElse(null);
     }
 
-    private void createAnimals() {
+    public void createAnimals() {
         List<String> animalNicks = this.getSettings().getNicks();
         List<Animal> result = new ArrayList<>();
         for(int i = 0; i < animalNicks.size(); i++) {

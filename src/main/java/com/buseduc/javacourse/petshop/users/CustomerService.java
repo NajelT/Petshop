@@ -118,6 +118,20 @@ public class CustomerService {
 
     }
 
+    public User loginOrRegisterFromWeb(String name, Double amount, Integer age) {
+        if ("admin".equals(name)) {
+            return new Admin();
+        }
+        if (shop.getShopCustomers().containsKey(name)) {
+            System.out.println("Hello again, " + name);
+            return shop.getShopCustomers().get(name);
+        }
+
+        Allergy allergy = null;
+        Customer customer = new Customer(name, amount, Currency.EUR, age, allergy);
+        shop.getShopCustomers().put(customer.getName(), customer);
+        return customer;
+    }
     public User loginOrRegister(String name) {
         if ("admin".equals(name)) {
             return new Admin();

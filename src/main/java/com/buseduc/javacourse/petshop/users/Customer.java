@@ -43,6 +43,10 @@ public class Customer extends User{
         return false;
     }
 
+    public Integer getAge() {
+        return age;
+    }
+
     public Allergy getAllergy() {
         return allergy;
     }
