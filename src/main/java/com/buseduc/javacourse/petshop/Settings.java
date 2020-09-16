@@ -1,6 +1,7 @@
 package com.buseduc.javacourse.petshop;
 
 import com.buseduc.javacourse.petshop.bio.AnimalInfo;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -20,11 +21,12 @@ public class Settings {
         try (InputStream input = new FileInputStream("conf/petshop.properties")) {
             properties.load(input);
         } catch (IOException e) {
-            System.out.println("Не смогли прочитать настройки");
+            System.out.println("Couldn't read settings");
         }
         return properties;
     }
     public String getShopName() {
+        Pair.of("a", "b");
         return getProperties().getProperty("shop.name");
 
     }

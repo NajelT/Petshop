@@ -2,8 +2,6 @@ package com.buseduc.javacourse.petshop.bio.species;
 
 import com.buseduc.javacourse.petshop.animalproperties.Allergable;
 import com.buseduc.javacourse.petshop.animalproperties.Allergy;
-import com.buseduc.javacourse.petshop.animalproperties.Noise;
-import com.buseduc.javacourse.petshop.animalproperties.Noisy;
 import com.buseduc.javacourse.petshop.bio.genes.Mammalia;
 
 import java.util.Arrays;
