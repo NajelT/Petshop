@@ -18,7 +18,7 @@ public class Settings {
 
     private Properties readProperties() {
         Properties properties = new Properties();
-        try (InputStream input = new FileInputStream("C://Projects/bta/petshop2/petshop/petshop.properties")) {
+        try (InputStream input = Settings.class.getClassLoader().getResourceAsStream("petshop.properties")) {
             properties.load(input);
         } catch (IOException e) {
             System.out.println("Couldn't read settings");
