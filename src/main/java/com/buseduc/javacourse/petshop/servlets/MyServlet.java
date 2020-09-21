@@ -17,14 +17,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class MyServlet extends HttpServlet {
-    private static Petshop shop;
-
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Petshop petshop = getShopInstance();
+        Petshop petshop = Petshop.getInstance();
         petshop.createAnimals();
         ServletContext ctx = getServletContext();
         request.setAttribute("petshop", petshop);
+        request.setAttribute("customerList", petshop.getShopCustomers());
         AdminService service = AdminService.getInstance(petshop);
         RequestDispatcher dispatcher = ctx.getRequestDispatcher("/jsp/shop.jsp");
         dispatcher.forward(request, response);
@@ -32,7 +31,7 @@ public class MyServlet extends HttpServlet {
     }
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Petshop shop = getShopInstance();
+        Petshop shop = Petshop.getInstance();
         CustomerService custService = new CustomerService(shop);
         PrintWriter out = response.getWriter();
         response.setContentType("text/html; charset=UTF-8");
@@ -50,12 +49,5 @@ public class MyServlet extends HttpServlet {
         dispatcher.forward(request, response);
 
 
-    }
-    private Petshop getShopInstance() {
-        if (shop == null) {
-            Settings settings = Settings.getInstance();
-            shop = Petshop.getInstance(settings);
-        }
-        return shop;
     }
 }

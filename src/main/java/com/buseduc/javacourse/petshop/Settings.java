@@ -1,9 +1,6 @@
 package com.buseduc.javacourse.petshop;
 
 import com.buseduc.javacourse.petshop.bio.AnimalInfo;
-import org.apache.commons.lang3.tuple.Pair;
-
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;

@@ -26,8 +26,7 @@ public class Petshop {
     private double balance;
     public static void main(String[] args) {
 
-        Settings settings = Settings.getInstance();
-        Petshop shop = Petshop.getInstance(settings);
+        Petshop shop = Petshop.getInstance();
         shop.createAnimals();
 //        System.out.println(shop.shopAnimals);
         CustomerService service = new CustomerService(shop);
@@ -109,9 +108,9 @@ public class Petshop {
         this.settings = settings;
     }
 
-    public static Petshop getInstance(Settings settings) {
+    public static Petshop getInstance() {
         if(petshop == null) {
-            petshop = new Petshop(settings);
+            petshop = new Petshop(Settings.getInstance());
         }
         return petshop;
     }

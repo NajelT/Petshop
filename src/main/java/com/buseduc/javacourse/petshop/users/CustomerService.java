@@ -5,6 +5,11 @@ import com.buseduc.javacourse.petshop.Currency;
 import com.buseduc.javacourse.petshop.Petshop;
 import com.buseduc.javacourse.petshop.animalproperties.Allergable;
 import com.buseduc.javacourse.petshop.animalproperties.Allergy;
+import com.buseduc.javacourse.petshop.db.JdbcAgent;
+import com.buseduc.javacourse.petshop.db.hibernate.HibernateConfig;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -128,7 +133,9 @@ public class CustomerService {
         }
 
         Allergy allergy = null;
-        Customer customer = new Customer(name, amount, Currency.EUR, age, allergy);
+        Customer customer = new Customer(name, amount, age, allergy);
+//        JdbcAgent.getInstance().saveCustomer(customer);
+        saveCustomer(customer);
         shop.getShopCustomers().put(customer.getName(), customer);
         return customer;
     }
@@ -145,7 +152,7 @@ public class CustomerService {
         Integer age = getCustomerAge();
         Allergy allergy = getCustomerAllergy();
         System.out.println("Welcome, " + name);
-        return new Customer(name, amount, Currency.EUR, age, allergy);
+        return new Customer(name, amount, age, allergy);
     }
 
     String getCustomerName() {
@@ -213,5 +220,17 @@ public class CustomerService {
     public void printAllList(Collection<?> objectsToPrint) {
         objectsToPrint.forEach(System.out::println);
     }
+
+    public void saveCustomer(Customer customer) {
+        HibernateConfig cfg = HibernateConfig.getInstance();
+        SessionFactory factoryObj = cfg.getFactoryObj();
+        Session sessionObj = factoryObj.openSession(); // Session Object
+        Transaction transObj = sessionObj.beginTransaction(); // Transaction Object
+        sessionObj.persist(customer); // Сохраним новый объект
+        transObj.commit(); // Совершим транзакцию
+        sessionObj.close(); // Закроем сессию
+        sessionObj = factoryObj.openSession();
+    }
+
 
 }

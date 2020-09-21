@@ -18,7 +18,7 @@
 </head>
 <body>
 <h1>Welcome to petshop: <%=shop.getName()%></h1>
-<form method="POST" action="/petshop/shop">
+<form method="POST" action="/shop">
     <p>Enter your name:</p>
     <p><input type="text" name="customerName"></p>
     <p>Enter your balance:</p>
