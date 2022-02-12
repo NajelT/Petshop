@@ -1,7 +1,6 @@
 package com.buseduc.javacourse.petshop.users;
 
 import com.buseduc.javacourse.petshop.Animal;
-import com.buseduc.javacourse.petshop.Currency;
 import com.buseduc.javacourse.petshop.Petshop;
 import com.buseduc.javacourse.petshop.animalproperties.Allergable;
 import com.buseduc.javacourse.petshop.animalproperties.Allergy;

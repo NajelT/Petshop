@@ -1,14 +1,16 @@
 package com.buseduc.javacourse.petshop;
 
+import com.buseduc.javacourse.petshop.*;
 import com.buseduc.javacourse.petshop.bio.AnimalInfo;
 import com.buseduc.javacourse.petshop.bio.AnimalSex;
 import com.buseduc.javacourse.petshop.users.Customer;
 import com.buseduc.javacourse.petshop.users.CustomerService;
 
+import java.util.Currency;
 import java.util.*;
 
 public class Petshop {
-    private List<Animal> shopAnimals;
+    private List<com.buseduc.javacourse.petshop.Animal> shopAnimals;
 
     public Map<String, Customer> getShopCustomers() {
         return shopCustomers;
@@ -19,8 +21,8 @@ public class Petshop {
     }
 
     private Map<String, Customer> shopCustomers;
-    private Settings settings;
-    private ChangesHistory changesHistory;
+    private com.buseduc.javacourse.petshop.Settings settings;
+    private com.buseduc.javacourse.petshop.ChangesHistory changesHistory;
     private String name;
     private static Petshop petshop;
     private double balance;
@@ -34,7 +36,7 @@ public class Petshop {
 
     }
 
-    public Animal findAnimalById(int animalId) {
+    public com.buseduc.javacourse.petshop.Animal findAnimalById(int animalId) {
         return getShopAnimals()
                 .stream()
                 .filter(animal -> animal.getId() == animalId)
@@ -44,14 +46,14 @@ public class Petshop {
 
     public void createAnimals() {
         List<String> animalNicks = this.getSettings().getNicks();
-        List<Animal> result = new ArrayList<>();
+        List<com.buseduc.javacourse.petshop.Animal> result = new ArrayList<>();
         for(int i = 0; i < animalNicks.size(); i++) {
             String nick = animalNicks.get(i);
             Double price = this.getSettings().getPrices().get(i);
             AnimalInfo species = this.getSettings().getSpecies().get(i);
             String sexStr = this.getSettings().getSexes().get(i);
             AnimalSex sex = AnimalSex.getByCode(sexStr);
-            Animal animal = createAnimal(nick, price, species, sex);
+            com.buseduc.javacourse.petshop.Animal animal = createAnimal(nick, price, species, sex);
             result.add(animal);
 
 
@@ -64,7 +66,7 @@ public class Petshop {
 
     public Animal createAnimal(String nick, double price, AnimalInfo species, AnimalSex sex) {
         this.balance += price;
-        return new Animal(nick, price, Currency.EUR, species, sex);
+        return new Animal(nick, price, null ,species, sex);
     }
 
 

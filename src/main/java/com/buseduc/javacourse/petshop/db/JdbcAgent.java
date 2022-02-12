@@ -1,14 +1,11 @@
 package com.buseduc.javacourse.petshop.db;
 
 
-import com.buseduc.javacourse.petshop.Currency;
-import com.buseduc.javacourse.petshop.Petshop;
 import com.buseduc.javacourse.petshop.animalproperties.Allergy;
 import com.buseduc.javacourse.petshop.users.Customer;
 
 import java.sql.*;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class JdbcAgent {
